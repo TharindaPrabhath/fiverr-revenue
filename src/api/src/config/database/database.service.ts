@@ -1,27 +1,28 @@
 import { Injectable } from "@nestjs/common";
 import { Database } from "src/config/interfaces";
-import { AWSService } from "src/config/aws/aws.service";
+//import { AWSService } from "src/config/aws/aws.service";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { CryptoService } from "src/config/crypto/crypto.service";
+//import { CryptoService } from "src/config/crypto/crypto.service";
 
 @Injectable()
 export class DatabaseService {
   private connection: Database;
   private cryptoService: any;
 
-  constructor(awsService: AWSService, cryptoService: CryptoService) {
-    this.connection = awsService.getDBValue();
-    this.cryptoService = cryptoService;
+  constructor() {
+  //constructor(awsService: AWSService, cryptoService: CryptoService) {
+    //this.connection = awsService.getDBValue();
+    //this.cryptoService = cryptoService;
   }
 
   getORMConfig(): TypeOrmModuleOptions {
     return {
       type: "mysql",
-      host: this.getConnection().host,
-      port: this.getConnection().port,
-      username: this.getConnection().username,
-      password: this.getConnection().password,
-      database: this.getConnection().database,
+      host: '127.0.0.1',//this.getConnection().host,
+      port: 3306,//this.getConnection().port,
+      username: 'bc_db',//this.getConnection().username,
+      password: 'bc_db123',//this.getConnection().password,
+      database: 'billingconfig_db',//this.getConnection().database,
       entities: [__dirname + "./../../modules/**/entities/*.entity{.ts,.js}"],
 
       // We are using migrations, synchronize should be set to false.

@@ -4,7 +4,7 @@ import { DatabaseService } from './database.service';
 import { CryptoModule } from 'src/config/crypto/crypto.module';
 
 @Module({
-  imports: [AWSModule.register(), CryptoModule.register()],
+  //imports: [AWSModule.register(), CryptoModule.register()],
 })
 export class DatabaseModule {
   static register(): DynamicModule {
