@@ -1,0 +1,38 @@
+version: 0.2
+env:
+  variables:
+    ARTIFACTORY_USERNAME: djcm
+    DJIN_ARTIFACTORY_USERNAME: djin-docker-ro
+    DJIN_REGISTRY: artifactory.dowjones.io:5005
+    NPM_REPO: djcm-npm-virtual
+    REGISTRY: artifactory.dowjones.io:5005
+    REPO: djcm/pulse-hosted-pmt/api-hpf
+  secrets-manager:
+    DJIN_ARTIFACTORY_PASSWORD: cerebro/artifactory-djin-docker-ro:password
+    DOCKER_USERNAME: cerebro/artifactory-docker:username
+    DOCKER_PASSWORD: cerebro/artifactory-docker:password
+    NPM_USERNAME: cerebro/artifactory-npm-ro:username
+    NPM_PASSWORD: cerebro/artifactory-npm-ro:password
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to DJIN Artifactory
+      - aws --version
+      - echo ${DJIN_ARTIFACTORY_PASSWORD} | docker login --username ${DJIN_ARTIFACTORY_USERNAME} --password-stdin https://${DJIN_REGISTRY}
+      - echo Setting NPM token
+      - NPM_TOKEN=$(echo -n ${NPM_USERNAME}:${NPM_PASSWORD} | base64 --wrap 0)
+      - REPOSITORY_URI=${REGISTRY}/${REPO}
+      - VERSION=`[ -f ${VERSION_FILE_NAME} ] && echo $(cat ${VERSION_FILE_NAME}) || echo ${CODEBUILD_BUILD_NUMBER}`
+      - IMAGE_TAG="${VERSION}"
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t ${REPOSITORY_URI}:${IMAGE_TAG} --no-cache --target production --build-arg NPM_TOKEN=${NPM_TOKEN} --build-arg build_number=${BUILD_NUMBER} --build-arg build_version=${VERSION} .
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Logging in to Artifactory
+      - echo ${DOCKER_PASSWORD} | docker login --username ${DOCKER_USERNAME} --password-stdin https://${REGISTRY}
+      - echo Pushing the Docker images...
+      - docker push ${REPOSITORY_URI}:${IMAGE_TAG}

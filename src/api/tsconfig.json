@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2017",
+    "lib": ["es2017", "dom"],
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "paths": {
+      "@config/*": ["src/config/*"],
+      "@common/*": ["src/common/*"],
+      "@logger/*": ["src/logger/*"],
+      "@util/*": ["src/util/*"],
+      "@exception/*": ["src/common/exceptions/*"],
+      "@database/*": ["src/config/database/*"],
+      "@aws/*": ["src/config/aws/*"],
+      "@modules/*": ["src/modules/*"],
+      "@decorators/*": ["src/common/decorators/*"],
+      "@guards/*": ["src/guards/*"],
+      "@crypto/*": ["src/config/crypto/*"],
+      "@cognito/*": ["src/config/cognito/*"],
+      "@middleware/*": ["src/common/middleware/*"]
+    }
+  },
+  "exclude": ["node_modules", "dist"],
+  "typeRoots": ["types", "node_modules/@types"],
+  "esModuleInterop": true,
+  "strict": true
+}
