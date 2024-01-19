@@ -35,11 +35,12 @@ export class AWSSDK {
 
   async loadSecrets() {
     const AWS_SECRET_NAMESPACE_PREFIX = "/pnp-services-";
-
+    
     let env = process.env.NODE_ENV ? process.env.NODE_ENV : "local";
 
     if (process.env.NODE_ENV === "collab") env = "local";
-
+    //if (process.env.NODE_ENV === "collab") return;
+    if (env === "local") return {};
     let configParams = {
       SecretId: AWS_SECRET_NAMESPACE_PREFIX + env + "/config",
     };

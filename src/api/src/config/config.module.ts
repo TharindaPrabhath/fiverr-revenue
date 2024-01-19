@@ -1,11 +1,12 @@
 import { DynamicModule, Module, Global } from "@nestjs/common";
 import { DatabaseModule } from "src/config/database/database.module";
 import { AWSModule } from "src/config/aws/aws.module";
-import { CryptoModule } from "src/config/crypto/crypto.module";
+//import { CryptoModule } from "src/config/crypto/crypto.module";
+import { LoggerModule } from "@common/middleware/logger.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DatabaseService } from "./database/database.service";
 import { ConfigService } from "./config.service";
-import { CognitoModule } from "./cognito/cognito.module";
+//import { CognitoModule } from "./cognito/cognito.module";
 import { HttpModule } from "@nestjs/axios";
 
 export interface ConfigModuleOptions {
@@ -23,8 +24,9 @@ export interface ConfigModuleOptions {
     }),
     AWSModule.register(),
     DatabaseModule.register(),
-    CognitoModule.register(),
-    CryptoModule.register()
+    LoggerModule
+    //CognitoModule.register(),
+    //CryptoModule.register()
   ],
 })
 export class ConfigModule {

@@ -12,7 +12,7 @@ import {
   Client,
   Endpoints,
 } from "@config/interfaces";
-import { stringify } from "querystring";
+//import { stringify } from "querystring";
 import { HttpService } from "@nestjs/axios";
 import { CognitoJwtVerifier } from "aws-jwt-verify";
 // import { User } from "@modules/users/entities/user.entity";
@@ -497,7 +497,7 @@ export class CognitoService {
 
     try {
       apiResponse = await this.http
-        .post(baseurl, stringify(requestBody), config)
+        .post(baseurl, new URLSearchParams(requestBody).toString, config)
         .toPromise();
     } catch (err) {
       console.log(err);

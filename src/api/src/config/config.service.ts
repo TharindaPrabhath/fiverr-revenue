@@ -2,7 +2,7 @@ import { Injectable, Logger, NotFoundException } from "@nestjs/common";
 import { Database, Client } from "./interfaces";
 import { DatabaseService } from "src/config/database/database.service";
 import { InjectRepository, TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { CryptoService } from "src/config/crypto/crypto.service";
+//import { CryptoService } from "src/config/crypto/crypto.service";
 import { LoggerService } from "@common/middleware/logger.service";
 import { AWSService } from "./aws/aws.service";
 import {
@@ -20,7 +20,7 @@ import {
   Not,
   Repository,
 } from "typeorm";
-import { CognitoService } from "./cognito/cognito.service";
+//import { CognitoService } from "./cognito/cognito.service";
 import { SecureHeaders } from "./interfaces/secureheaders.interface";
 
 @Injectable()
@@ -32,21 +32,21 @@ export class ConfigService {
 
   constructor(
     databaseService: DatabaseService,
-    private cognitoService: CognitoService,
-    private cryptoService: CryptoService,
+//    private cognitoService: CognitoService,
+//    private cryptoService: CryptoService,
     private logger: LoggerService,
     private awsService: AWSService,
     
   ) {
     this.logger = new Logger("ConfigService");
-    this.dbConnection = databaseService.getConnection();
+    //this.dbConnection = databaseService.getConnection();
     this.ormConfig = databaseService.getORMConfig();
     
   }
 
-  getCognitoService() {
-    return this.cognitoService;
-  }
+  // getCognitoService() {
+  //   return this.cognitoService;
+  // }
 
   getReadOnlyDBConnection(): Database {
     return this.readOnlyDBConnection;
@@ -80,42 +80,42 @@ export class ConfigService {
 
   
 
-  getClientByName(name: string): Client {
-    return this.cognitoService.getClientByName(name);
-  }
+  // getClientByName(name: string): Client {
+  //   return this.cognitoService.getClientByName(name);
+  // }
 
   getSecretValue(key: string): string {
     return this.awsService.getSecretValue(key);
   }
 
-  async getCognitoTokenByClient(
-    clientName: string,
-    grantType: string = "client_credentials",
-    scope: string = "admin/app:admin"
-  ) {
-    const client = this.getClientByName(clientName);
-    return this.getCognitoToken(client, grantType, scope);
-  }
+  // async getCognitoTokenByClient(
+  //   clientName: string,
+  //   grantType: string = "client_credentials",
+  //   scope: string = "admin/app:admin"
+  // ) {
+  //   const client = this.getClientByName(clientName);
+  //   return this.getCognitoToken(client, grantType, scope);
+  // }
 
-  async getCognitoToken(
-    clientDetails: Client,
-    grantType: string = "client_credentials",
-    scope: string = "admin/app:admin"
-  ): Promise<any> {
-    return this.cognitoService.getCognitoToken(clientDetails, grantType, scope);
-  }
+  // async getCognitoToken(
+  //   clientDetails: Client,
+  //   grantType: string = "client_credentials",
+  //   scope: string = "admin/app:admin"
+  // ): Promise<any> {
+  //   return this.cognitoService.getCognitoToken(clientDetails, grantType, scope);
+  // }
 
-  encryptRequest(data: string) {
-    return this.cryptoService.encryptHMAC(data);
-  }
+  // encryptRequest(data: string) {
+  //   return this.cryptoService.encryptHMAC(data);
+  // }
 
-  encrypt(data: string) {
-    return this.cryptoService.encrypt(data);
-  }
+  // encrypt(data: string) {
+  //   return this.cryptoService.encrypt(data);
+  // }
 
-  decrypt(data: string) {
-    return this.cryptoService.decrypt(data);
-  }
+  // decrypt(data: string) {
+  //   return this.cryptoService.decrypt(data);
+  // }
 
   getAPIEndpoint(serviceName: string) {
     return this.awsService.getAPIEndpoints()[serviceName];

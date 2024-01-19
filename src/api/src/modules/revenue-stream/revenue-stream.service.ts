@@ -1,11 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { CreateRevenueStreamDto } from './dto/create-revenue-stream.dto';
 import { UpdateRevenueStreamDto } from './dto/update-revenue-stream.dto';
-
+import { EntityManager, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { RevenueStream } from './entities/revenue-stream.entity';
 @Injectable()
 export class RevenueStreamService {
-  create(createRevenueStreamDto: CreateRevenueStreamDto) {
-    return 'This action adds a new revenueStream';
+  constructor(
+    @InjectRepository(RevenueStream)
+    private readonly itemsRepository: Repository<RevenueStream>,
+    private readonly entityManager: EntityManager,
+  ) {}
+  async create(createRevenueStreamDto: CreateRevenueStreamDto) {
+
+    const revenueStream = new RevenueStream({
+      ...createRevenueStreamDto
+    });
+    
+    return await this.entityManager.save(revenueStream);
+    //return 'This action adds a new revenueStream';
   }
 
   findAll() {

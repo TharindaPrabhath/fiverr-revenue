@@ -17,9 +17,9 @@ import { DatabaseModule } from "@config/database/database.module";
     }),
     RevenueConfigModule,
     RevenueStreamModule,
-    DatabaseModule
+//    DatabaseModule,
 //    CommonModule,
-//    ConfigModule
+    ConfigModule.register()
   ],
   providers: [],
   controllers: [AppController]

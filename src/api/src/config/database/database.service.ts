@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Database } from "src/config/interfaces";
-//import { AWSService } from "src/config/aws/aws.service";
+import { AWSService } from "src/config/aws/aws.service";
 import { TypeOrmModuleOptions } from "@nestjs/typeorm";
 //import { CryptoService } from "src/config/crypto/crypto.service";
 
@@ -11,7 +11,8 @@ export class DatabaseService {
 
   constructor() {
   //constructor(awsService: AWSService, cryptoService: CryptoService) {
-    //this.connection = awsService.getDBValue();
+  //constructor(awsService: AWSService) {
+  //  this.connection = awsService.getDBValue();
     //this.cryptoService = cryptoService;
   }
 

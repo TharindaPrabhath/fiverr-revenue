@@ -40,10 +40,10 @@ export class CognitoScopesGuard implements CanActivate {
       return false;
     }
     authorization = authorization.split(" ")[1];
-    const cognitoService = this.configService.getCognitoService();
+    //const cognitoService = this.configService.getCognitoService();
     let flag;
     try {
-      flag = cognitoService.verifyCognitoToken(authorization, routeCognitoScopes);
+    //  flag = cognitoService.verifyCognitoToken(authorization, routeCognitoScopes);
     } catch (err) {
       console.log(err);
       this.logger.error(`Cognito authentication is failed for the ${authorization}`);
