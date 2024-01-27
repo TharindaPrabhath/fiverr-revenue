@@ -3,24 +3,23 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
-  ManyToMany,
+  OneToOne,
   UpdateDateColumn,
 } from "typeorm";
 import { AbstractEntity } from "../../../config/database/abstract.entity";
+import { RevenueConfig } from "@modules/revenue-config/entities/revenue-config.entity";
 import { RevenueStream } from "@modules/revenue-stream/entities/revenue-stream.entity";
-@Entity()
-export class RevenueConfig extends AbstractEntity<RevenueConfig> {
+
+@Entity("revenue_config_stream")
+export class RevenueConfigStream extends AbstractEntity<RevenueConfigStream> {
   @Column()
-  name: string;
+  revsharepct: string;
 
   @Column()
-  description: string;
+  chargetemplateid: string;
 
   @Column()
-  audience: string;
-
-  @Column()
-  edition: string;
+  taxcode: string;
 
   @Column({ default: () => "CURRENT_TIMESTAMP" })
   @CreateDateColumn()
@@ -30,9 +29,11 @@ export class RevenueConfig extends AbstractEntity<RevenueConfig> {
   @UpdateDateColumn()
   modified_date: Date;
 
-  @ManyToMany(() => RevenueStream)
-  @JoinTable({
-    name: "revenue_config_stream",
-  })
-  revenueStreams: RevenueStream[];
+  @OneToOne(() => RevenueConfig)
+  @JoinTable()
+  revenueConfig: RevenueConfig;
+
+  @OneToOne(() => RevenueStream)
+  @JoinTable()
+  revenueStream: RevenueStream;
 }

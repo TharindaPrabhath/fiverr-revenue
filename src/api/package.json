@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "NODE_ENV=local nest start --watch",
+    "start:dev": "nest start --watch",
     "start:debug-pnp": "NODE_ENV=local nest start --debug --watch ",
     "start:prod": "NODE_ENV=production node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -33,6 +33,7 @@
     "@nestjs/cli": "^9.0.0",
     "@nestjs/common": "^9.3.12",
     "@nestjs/core": "^9.0.0",
+    "@nestjs/mapped-types": "^2.0.4",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.2.1",
     "@nestjs/throttler": "^4.2.1",
@@ -52,7 +53,8 @@
     "rimraf": "^5.0.0",
     "rxjs": "^7.2.0",
     "typeorm": "^0.3.16",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
