@@ -3,6 +3,7 @@ import {
   CreateDateColumn,
   Entity,
   JoinTable,
+  ManyToOne,
   OneToOne,
   UpdateDateColumn,
 } from "typeorm";
@@ -29,11 +30,23 @@ export class RevenueConfigStream extends AbstractEntity<RevenueConfigStream> {
   @UpdateDateColumn()
   modified_date: Date;
 
-  @OneToOne(() => RevenueConfig)
-  @JoinTable()
+  @ManyToOne(
+    () => RevenueConfig,
+    (revenueConfig) => revenueConfig.revenueConfigStreams
+  )
   revenueConfig: RevenueConfig;
 
-  @OneToOne(() => RevenueStream)
-  @JoinTable()
+  @ManyToOne(
+    () => RevenueStream,
+    (revenueStream) => revenueStream.revenueConfigStreams
+  )
   revenueStream: RevenueStream;
+
+  // @OneToOne(() => RevenueConfig)
+  // @JoinTable()
+  // revenueConfig: RevenueConfig;
+
+  // @OneToOne(() => RevenueStream)
+  // @JoinTable()
+  // revenueStream: RevenueStream;
 }

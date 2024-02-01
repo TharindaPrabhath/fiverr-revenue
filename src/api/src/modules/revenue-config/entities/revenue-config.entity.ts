@@ -4,10 +4,12 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   UpdateDateColumn,
 } from "typeorm";
 import { AbstractEntity } from "../../../config/database/abstract.entity";
 import { RevenueStream } from "@modules/revenue-stream/entities/revenue-stream.entity";
+import { RevenueConfigStream } from "@modules/revenue-config-stream/entities/revenue-config-stream.entity";
 @Entity()
 export class RevenueConfig extends AbstractEntity<RevenueConfig> {
   @Column()
@@ -30,9 +32,15 @@ export class RevenueConfig extends AbstractEntity<RevenueConfig> {
   @UpdateDateColumn()
   modified_date: Date;
 
-  @ManyToMany(() => RevenueStream)
-  @JoinTable({
-    name: "revenue_config_stream",
-  })
-  revenueStreams: RevenueStream[];
+  @OneToMany(
+    () => RevenueConfigStream,
+    (revenueConfigStreams) => revenueConfigStreams.revenueConfig
+  )
+  revenueConfigStreams: RevenueConfigStream[];
+
+  // @ManyToMany(() => RevenueStream)
+  // @JoinTable({
+  //   name: "revenue_config_stream",
+  // })
+  // revenueStreams: RevenueStream[];
 }

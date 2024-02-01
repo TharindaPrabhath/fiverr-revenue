@@ -29,5 +29,6 @@ import { ArgumentMetadata, Injectable, PipeTransform } from "@nestjs/common";
 export class CreateRevenueConfigStreamDto {
   revenueSharePercentage: string;
   chargeTemplateId: string;
-  revenueStreamId: string;
+  revenueStreamId: number;
+  taxCode: string;
 }

@@ -11,7 +11,7 @@ import {
 import { RevenueConfigService } from "./revenue-config.service";
 import {
   CreateRevenueConfigDto,
-  RequestConverterPipe,
+  // RequestConverterPipe,
 } from "./dto/create-revenue-config.dto";
 import { UpdateRevenueConfigDto } from "./dto/update-revenue-config.dto";
 
@@ -20,7 +20,7 @@ export class RevenueConfigController {
   constructor(private readonly revenueConfigService: RevenueConfigService) {}
 
   @Post()
-  @UsePipes(new RequestConverterPipe())
+  // @UsePipes(new RequestConverterPipe())
   create(@Body() createRevenueConfigDto: CreateRevenueConfigDto) {
     return this.revenueConfigService.create(createRevenueConfigDto);
   }

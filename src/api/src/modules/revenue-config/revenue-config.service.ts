@@ -1,19 +1,26 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { EntityManager, Repository } from "typeorm";
+import { Repository } from "typeorm";
 import { CreateRevenueConfigDto } from "./dto/create-revenue-config.dto";
 import { UpdateRevenueConfigDto } from "./dto/update-revenue-config.dto";
 import { RevenueConfig } from "./entities/revenue-config.entity";
+import { RevenueConfigStream } from "@modules/revenue-config-stream/entities/revenue-config-stream.entity";
+import { RevenueStream } from "@modules/revenue-stream/entities/revenue-stream.entity";
 
 @Injectable()
 export class RevenueConfigService {
   constructor(
     @InjectRepository(RevenueConfig)
-    private readonly itemsRepository: Repository<RevenueConfig>,
-    private readonly entityManager: EntityManager
+    private readonly revenueConfigRepository: Repository<RevenueConfig>,
+    @InjectRepository(RevenueStream)
+    private readonly revenueStreamRepository: Repository<RevenueStream>,
+    @InjectRepository(RevenueConfig)
+    private readonly revenueConfigStreamRepository: Repository<RevenueConfigStream>
   ) {}
 
   async create(createRevenueConfigDto: CreateRevenueConfigDto) {
+    console.log("createRevenueConfigDto", createRevenueConfigDto);
+
     const revenueConfig = new RevenueConfig({
       name: createRevenueConfigDto.name,
       description: createRevenueConfigDto.description,
@@ -22,24 +29,52 @@ export class RevenueConfigService {
       creation_date: new Date(),
       modified_date: new Date(),
     });
-    await this.entityManager.save(revenueConfig);
+    await this.revenueConfigRepository.save(revenueConfig);
 
-    const revenueConfigStreams = createRevenueConfigDto.revenueConfigStreams;
-    await this.entityManager.save(revenueConfigStreams);
+    const revenueStreams = await this.revenueStreamRepository.findByIds(
+      createRevenueConfigDto.revenueConfigStreams.map(
+        (record) => record.revenueStreamId
+      )
+    );
+
+    if (revenueStreams.length === 0)
+      throw new BadRequestException(
+        "No such matching revenue streams were found."
+      );
+
+    const revenueConfigStreams =
+      createRevenueConfigDto.revenueConfigStreams.map((record) => ({
+        revsharepct: record.revenueSharePercentage,
+        chargetemplateid: record.chargeTemplateId,
+        taxcode: record.taxCode,
+        creation_date: new Date(),
+        modified_date: new Date(),
+        revenueConfig: revenueConfig,
+        revenueStream: revenueStreams.find(
+          (revenueStream) => revenueStream.id === record.revenueStreamId
+        ),
+      }));
+    await this.revenueConfigStreamRepository.save(revenueConfigStreams);
   }
+
   async findAll() {
-    return await this.itemsRepository.find();
+    return await this.revenueConfigRepository.find();
   }
 
   async findOne(id: number) {
-    return await this.itemsRepository.findOne({ where: { id: id } });
+    return await this.revenueConfigRepository.findOne({ where: { id: id } });
   }
 
   async update(id: number, updateRevenueConfigDto: UpdateRevenueConfigDto) {
-    return await this.itemsRepository.update(id, updateRevenueConfigDto);
+    return await this.revenueConfigRepository.update(id, {
+      name: updateRevenueConfigDto.name,
+      description: updateRevenueConfigDto.description,
+      audience: updateRevenueConfigDto.audience,
+      edition: updateRevenueConfigDto.edition,
+    });
   }
 
   async remove(id: number) {
-    return await this.itemsRepository.delete(id);
+    return await this.revenueConfigRepository.delete(id);
   }
 }
